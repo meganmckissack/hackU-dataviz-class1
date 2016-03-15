@@ -87,13 +87,3 @@ svg.selectAll('rect')
       return colorScale(data) //data based
       //return colorScale(i) //position based
     })
-
-/*d3.select('#barChart').selectAll('div')
-  .data(newData)
-  .enter() // starting d3
-  .append('div') // creating a div
-  .attr('class', 'bar') // assigning class
-  .style('height', function(d) {
-    var barHeight = d.length * 5;
-    return barHeight + 'px' // returning data with px appended
-  });*/
