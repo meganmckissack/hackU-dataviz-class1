@@ -3,13 +3,17 @@ body {
   padding-left: 100px;
   background-color: #d3d3d3;
 }
-#barChart {
-  width: 400px;
-  height: 250px;
-  background-color: #E7F3EF;
+
+#chartArea {
+  width: 600px;
+  height: 300px;
+  background-color: #EFE;
 }
 
-.bar {
+.scatter {
   display: inline-block;
-  
+  fill:tomato;
+  fill-opacity: 0.5;
+  stroke:black;
+  stroke-weight:1px;
 }

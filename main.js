@@ -40,50 +40,65 @@ var data = [{
   "nature": "plus good plus "
 }]
 
+/*var dataSet = _.map(_.range(40), function(i) {
+  return {
+    x: Math.random() *100,
+    y: Math.random() *100,
+    r: Math.random() *30
+  };
+});*/
+
+var dataSet = data.map(function(val){
+  return {
+    x: val.synonyms.length*20,
+    y: val.qualities.length*25,
+    r: val.nature.length*2
+  }
+});
 
 
-var newData=[];
-for (i = 0; i < data.length; i++) {
-  var item = data[i]["nature"].length;
-  newData.push(item);
-}
 
-var height = 200;
-var width = 400;
+var margin = {
+  top: 0,
+  right: 0,
+  bottom: 0,
+  left: 0
+};
+var height = 500 - margin.top - margin.bottom;
+var width = 600 - margin.left - margin.right;
 
 var yScale = d3.scale.linear()
-  .domain([0, d3.max(newData)*1.1])
-  .range([0, height]);
+  .domain([0, d3.max(dataSet, function(data) {
+    return data.y
+  })])
+  .range([height, 0]);
 
-var xScale = d3.scale.ordinal()
-    .domain(newData)
-    .rangeBands([0, width], 0.25, 0.25);
+var xScale = d3.scale.linear()
+  .domain([0, 100])
+  .range([0, width]);
 
 var colorScale = d3.scale.linear()
-    .domain([0,d3.max(newData)]) //data based
-    //.domain([0,newData.length]) //position based
-    .range(['#55C3DC', '#73726D', '#E24B2C']);
+  .domain([0, d3.max(dataSet)]) //data based
+  //.domain([0,newData.length]) //position based
+  .range(['#55C3DC', '#73726D', '#E24B2C']);
 
-var svg = d3.select('#barChart').append('svg')
-    .attr('width', width)
-    .attr('height', height);
+var svg = d3.select('#chartArea').append('svg')
+  .attr('width', width + margin.left + margin.right)
+  .attr('height', height + margin.top + margin.bottom)
+  .append('g')
+  .attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
 
-svg.selectAll('rect')
-    .data(newData)
-    .enter()
-    .append('rect')
-    .attr('class', 'bar')
-    .attr('x', function(data, index){
-      return xScale(data)
-    })
-    .attr('y', function(data) {
-      return height - yScale(data)
-    })
-    .attr('width', xScale.rangeBand)
-    .style('height', function (data) {
-      return yScale(data)
-    })
-    .attr('fill', function(data, i) {
-      return colorScale(data) //data based
-      //return colorScale(i) //position based
-    })
+svg.selectAll('circle')
+  .data(dataSet)
+  .enter()
+  .append('circle')
+  .attr('class', 'scatter')
+  .attr('cx', function(data) {
+    return xScale(data.x)
+  })
+  .attr('cy', function(data) {
+    return yScale(data.y)
+  })
+  .attr('r', function(data) {
+    return data.r
+  });
